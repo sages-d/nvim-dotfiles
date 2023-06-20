@@ -58,6 +58,10 @@ local plugins = {
 	"windwp/nvim-autopairs",
 	version = "*",
     },
+    {
+	"lewis6991/gitsigns.nvim",
+	version = "*",
+    },
 }
 
 local opts = {}
@@ -87,6 +91,7 @@ require("nvim-treesitter.configs").setup({
     },
 })
 require("nvim-autopairs").setup()
+require("gitsigns").setup()
 
 vim.cmd([[colorscheme tokyonight]])
 vim.cmd([[set number]])
@@ -97,6 +102,12 @@ vim.keymap.set('n', '<leader>ff', function() builtin.find_files() end)
 vim.keymap.set('n', '<leader>fw', function() builtin.live_grep() end)
 vim.keymap.set('n', '<leader>fb', function() builtin.buffers() end)
 vim.keymap.set('n', '<leader>fh', function() builtin.help_tags() end)
+
+-- Gitsigns Keymapping
+vim.keymap.set('n', '<leader>pb', '<cmd>Gitsigns blame_line<cr>')
+vim.keymap.set('n', ']c', '<cmd>Gitsigns next_hunk<cr>')
+vim.keymap.set('n', '[c', '<cmd>Gitsigns prev_hunk<cr>')
+vim.keymap.set('n', '<leader>ph', '<cmd>Gitsigns preview_hunk<cr>')
 
 -- Buffer Keymapping
 vim.keymap.set('n', '<leader>x', "<cmd>bdelete<cr>")
