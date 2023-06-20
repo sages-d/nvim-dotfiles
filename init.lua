@@ -27,15 +27,46 @@ local plugins = {
         dependencies = {
             "nvim-tree/nvim-web-devicons",
         }
+    },
+    {
+	"neovim/nvim-lspconfig",
+	version = "*",
+    },
+    {
+	"nvim-lualine/lualine.nvim",
+	version = "*",
+	dependencies = {
+	    "nvim-tree/nvim-web-devicons",
+        }
+    },
+    {
+	"folke/tokyonight.nvim",
+	version = "*",
+	lazy = false,
+	priority = 1000,
     }
 }
+
 local opts = {}
+
 
 vim.g.mapleader = " "
 
 require("lazy").setup(plugins, opts)
 require("mason").setup()
 require("nvim-tree").setup()
+require("lualine").setup({
+    options = {
+        theme = 'tokyonight'
+    }
+})
+require("tokyonight").setup({
+    style = "storm",
+    light_style = "day",
+    terminal_colors = true
+})
+
+vim.cmd([[colorscheme tokyonight]])
 
 local builtin = require("telescope.builtin")
 vim.keymap.set('n', '<leader>ff', function() builtin.find_files() end)
