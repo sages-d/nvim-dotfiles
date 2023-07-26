@@ -255,3 +255,12 @@ vim.keymap.set('n', '<C-k>', '<C-w>k')
 -- General Keymapping
 vim.keymap.set('i', 'jj', '<ESC>')
 vim.keymap.set('n', ';', ':')
+
+-- LSP Keymapping
+vim.keymap.set('n', "K", function() vim.lsp.buf.hover() end)
+vim.keymap.set('n', "gD", function() vim.lsp.buf.declaration() end)
+vim.keymap.set('n', "gd", function() vim.lsp.buf.definition() end)
+vim.keymap.set('n', "gi", function() vim.lsp.buf.implementation() end)
+vim.keymap.set('n', "gr", function() vim.lsp.buf.references() end)
+vim.keymap.set('n', "ca", function() vim.lsp.buf.code_action() end)
+
