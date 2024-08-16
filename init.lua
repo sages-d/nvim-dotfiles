@@ -10,7 +10,9 @@ if not vim.loop.fs_stat(lazypath) then
     })
 end
 vim.opt.rtp:prepend(lazypath)
+vim.opt.pumheight = 20
 
+-- Load the plugins
 local plugins = {
     {
         "williamboman/mason.nvim",
@@ -18,7 +20,7 @@ local plugins = {
     },
     {
         "nvim-telescope/telescope.nvim",
-        tag = '0.1.1',
+        branch = '0.1.x',
         dependencies = { 'nvim-lua/plenary.nvim' }
     },
     {
@@ -43,11 +45,16 @@ local plugins = {
             "nvim-tree/nvim-web-devicons",
         }
     },
+    -- {
+    --    "catppuccin/nvim",
+    --    name = "catppuccin",
+    --    lazy = false,
+    --    priority = 1000,
+    -- },
     {
-        "catppuccin/nvim",
-        name = "catppuccin",
+        "neanias/everforest-nvim",
         lazy = false,
-        priority = 1000,
+        priority = 1000
     },
     {
         "nvim-treesitter/nvim-treesitter",
@@ -89,7 +96,8 @@ local plugins = {
     {
         "L3MON4D3/LuaSnip",
         version = "*",
-        dependencies = { "rafamadriz/friendly-snippets" }
+        dependencies = { "rafamadriz/friendly-snippets" },
+	    build = "make install_jsregexp",
     },
     {
         "saadparwaiz1/cmp_luasnip",
@@ -98,28 +106,36 @@ local plugins = {
     {
         "rafamadriz/friendly-snippets",
     },
+    {
+	"supermaven-inc/supermaven-nvim",
+    }
 }
 
 local opts = {}
 
+-- Set the keymap for the leader key
+
 vim.g.mapleader = " "
+
+-- Load the plugins
 
 require("lazy").setup(plugins, opts)
 require("mason").setup()
 require("nvim-tree").setup()
 require("lualine").setup({
     options = {
-        theme = 'catppuccin'
+        theme = 'everforest'
     }
 })
-require("catppuccin").setup({
+require("everforest").setup({
     integrations = {
         cmp = true,
         gitsigns = true,
         nvimtree = true,
         telescope = true,
         treesitter = true,
-    }
+    },
+    transparent_background_level = 1,
 })
 require("nvim-treesitter.configs").setup({
     ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "python", "javascript" },
@@ -133,6 +149,7 @@ require("nvim-treesitter.configs").setup({
 })
 require("nvim-autopairs").setup()
 require("gitsigns").setup()
+require("supermaven-nvim").setup({})
 
 local null_ls = require("null-ls")
 local sources = {
@@ -161,13 +178,14 @@ cmp.setup({
         completion = cmp.config.window.bordered(),
         documentation = cmp.config.window.bordered()
     },
-    sources = {
+    sources = cmp.config.sources({
         { name = 'nvim_lsp' },
-        { name = 'luasnip' },
+        { name = 'luasnip' }
+    }, {
         { name = 'buffer' }
-    },
+    }),
     mapping = {
-        ["<Tab>"] = cmp.mapping(function(fallback)
+        ["<C-j>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
                 cmp.select_next_item()
                 -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
@@ -180,7 +198,7 @@ cmp.setup({
                 fallback()
             end
         end, { "i", "s" }),
-        ["<S-Tab>"] = cmp.mapping(function(fallback)
+        ["<C-k>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
                 cmp.select_prev_item()
             elseif luasnip.jumpable(-1) then
@@ -223,7 +241,7 @@ for _, lsp in ipairs(servers) do
 end
 require("luasnip.loaders.from_vscode").lazy_load()
 
-vim.cmd([[colorscheme catppuccin]])
+vim.cmd([[colorscheme everforest]])
 vim.cmd([[set number]])
 
 vim.opt.completeopt = 'menuone,noselect'
